@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 
 /* Your own custom base styles */
@@ -13,3 +15,10 @@
 /* Stop purging. */
 
 /* Your own custom utilities */
+.menuIcon {
+	@apply flex gap-[10px] justify-start p-[16px] items-center hover:bg-violet-50 rounded-2xl cursor-pointer;
+}
+
+.active {
+	@apply bg-violetPrimary rounded-2xl text-white hover:text-black;
+}
