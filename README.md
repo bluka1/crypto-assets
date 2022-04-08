@@ -6,7 +6,8 @@ Design that I was following can be seen on [this link](https://www.figma.com/fil
 
 ## Technologies I used:
 
-1.  Typescript
-2.  Tailwindcss
-3.  Firebase
-4.  CoinCap API 2.0
+1. React
+2. Typescript
+3. Tailwindcss
+4. Firebase
+5. CoinCap API 2.0
