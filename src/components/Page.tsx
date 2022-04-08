@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { ReactComponent as UserIcon } from '../assets/user.svg';
+import { ReactComponent as LeaveIcon } from '../assets/sign-out.svg';
 import { ReactComponent as ArrowIcon } from '../assets/arrow.svg';
 
 import AuthContext from '../store/auth-context';
@@ -26,11 +26,10 @@ const Page: React.FC<{ title: string }> = (props) => {
 			<div className='flex justify-between items-center'>
 				<h1 className='text-[26px] font-medium'>{props.title}</h1>
 				<button className='flex hover:bg-gray-100 justify-between items-center  p-[5px] bg-white rounded-xl gap-[14px]'>
-					<div className='flex items-center gap-[14px]' onClick={logOut}>
-						<UserIcon className='rounded-xl w-[38px] h-[38px]' />
-						<span>{authCtx.name}</span>
+					<div className='flex items-center gap-[14px] p-2' onClick={logOut}>
+						<LeaveIcon className='rounded-xl w-[20px] h-[20px]' />
+						<span>Sign out</span>
 					</div>
-					<ArrowIcon className='w-[24px] h-[24px]' />
 				</button>
 			</div>
 			<div className='mt-[30px] p-[20px] flex-1 bg-white rounded-xl '>

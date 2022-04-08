@@ -10,7 +10,7 @@ module.exports = {
 				body: ['Poppins'],
 			},
 			gridTemplateColumns: {
-				currency: 'repeat(3, 10%) 15% 20% 15% 15% 5%',
+				currency: 'repeat(3, 10%) 15% 15% 15% 15% 10%',
 			},
 		},
 	},

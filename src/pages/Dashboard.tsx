@@ -56,8 +56,8 @@ const Dashboard: React.FC<{}> = (props) => {
 			</div>
 
 			{/* MAIN */}
-			<div className=' mt-[35px] overflow-auto'>
-				<div className=' grid grid-cols-currency mb-[20px] place-items-center p-[15px] border-b-[1px] border-gray-200 sticky top-0'>
+			<div className=''>
+				<div className=' grid grid-cols-currency mb-[20px] mt-[35px] place-items-center p-[15px] border-b-[1px] bg-white z-10 border-gray-200 sticky top-[-40px]'>
 					<p>Rank</p>
 					<p>Name</p>
 					<p>Symbol</p>
@@ -67,7 +67,7 @@ const Dashboard: React.FC<{}> = (props) => {
 					<p>24h Change</p>
 					<p>Info</p>
 				</div>
-				<div className='overflow-auto'>
+				<div>
 					{currencies.map((curr) => (
 						<Currency
 							key={curr.id}

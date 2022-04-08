@@ -1,4 +1,5 @@
-import { ReactComponent as StarIcon } from '../assets/star.svg';
+import { ReactComponent as ArrowUpIcon } from '../assets/arrow-up.svg';
+import { ReactComponent as ArrowDownIcon } from '../assets/arrow-down.svg';
 import { ReactComponent as ChartIcon } from '../assets/chart-bar.svg';
 
 const Currency: React.FC<{
@@ -21,19 +22,21 @@ const Currency: React.FC<{
 			<p className='text-[14px]'>
 				{Number(
 					props.maxSupply
-						? (props.supply / props.maxSupply) * 100
-						: props.supply,
-				).toFixed(2)}
+						? Math.round((props.supply / props.maxSupply) * 100)
+						: Math.round(props.supply),
+				)}
 				{props.maxSupply ? ' %' : ''}
 			</p>
 			{props.change > 0 ? (
-				<p className='text-[14px] text-green-600'>
+				<div className='flex text-[14px] text-green-600'>
+					{<ArrowUpIcon className='text-green-500 w-[22px] h-[22px]' />}&nbsp;{' '}
 					{Number(props.change).toFixed(2)}%
-				</p>
+				</div>
 			) : (
-				<p className='text-[14px] text-red-600'>
+				<div className='flex text-[14px] text-red-600 '>
+					{<ArrowDownIcon className='text-red-500 w-[22px] h-[22px]' />}&nbsp;
 					{Number(props.change).toFixed(2)}%
-				</p>
+				</div>
 			)}
 
 			<div>
