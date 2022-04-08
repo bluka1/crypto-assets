@@ -17,23 +17,35 @@ const Currency: React.FC<{
 			<p className='text-[14px]'>{props.rank}</p>
 			<p className='text-[14px]'>{props.name}</p>
 			<p className='text-[14px]'>{props.symbol}</p>
-			<p className='text-[14px]'>$ {Number(props.price).toFixed(2)}</p>
-			<p className='text-[14px]'>$ {Number(props.volume).toFixed(2)}</p>
 			<p className='text-[14px]'>
-				{Number(
-					props.maxSupply
-						? Math.round((props.supply / props.maxSupply) * 100)
-						: Math.round(props.supply),
-				)}
+				${' '}
+				{Number(props.price).toLocaleString(undefined, {
+					minimumFractionDigits: 2,
+					maximumFractionDigits: 2,
+				})}
+			</p>
+			<p className='text-[14px]'>
+				${' '}
+				{Number(props.volume).toLocaleString(undefined, {
+					minimumFractionDigits: 2,
+					maximumFractionDigits: 2,
+				})}
+			</p>
+			<p className='text-[14px]'>
+				{props.maxSupply
+					? Number(
+							Math.round((props.supply / props.maxSupply) * 100),
+					  ).toLocaleString()
+					: Number(Math.round(props.supply)).toLocaleString()}
 				{props.maxSupply ? ' %' : ''}
 			</p>
 			{props.change > 0 ? (
-				<div className='flex text-[14px] text-green-600'>
+				<div className='flex text-[14px] items-center text-green-600'>
 					{<ArrowUpIcon className='text-green-500 w-[22px] h-[22px]' />}&nbsp;{' '}
 					{Number(props.change).toFixed(2)}%
 				</div>
 			) : (
-				<div className='flex text-[14px] text-red-600 '>
+				<div className='flex text-[14px] items-center text-red-600 '>
 					{<ArrowDownIcon className='text-red-500 w-[22px] h-[22px]' />}&nbsp;
 					{Number(props.change).toFixed(2)}%
 				</div>

@@ -13,7 +13,10 @@ const Page: React.FC<{ title: string }> = (props) => {
 	const logOut = () => {
 		signOut(auth)
 			.then(() => {
-				toast.success('You successfully signed out.');
+				toast.success(
+					'Sorry to see you go... but you successfully signed out.',
+					{ duration: 3000 },
+				);
 			})
 			.catch((error) => {
 				toast.error('Something went wrong. ' + error.message);

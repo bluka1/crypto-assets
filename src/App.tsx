@@ -43,7 +43,22 @@ function App() {
 					'solana',
 				]);
 				authCtx.nameHandler(user.displayName!);
-				toast.success('You successfully signed in.');
+				toast.success(
+					`Welcome ${user.displayName}! Hope that you will enjoy using/testing this web app :)`,
+					{
+						duration: 3500,
+						style: {
+							border: '1px solid green',
+							padding: '16px',
+							color: '#7a89fe',
+							textAlign: 'center',
+						},
+						iconTheme: {
+							primary: '#7a89fe',
+							secondary: '#e8edf3',
+						},
+					},
+				);
 			})
 			.catch((error) => {
 				// Handle Errors here.
@@ -51,7 +66,9 @@ function App() {
 				const errorMessage = error.message;
 				const email = error.email;
 				const credential = GoogleAuthProvider.credentialFromError(error);
-				toast.error('Something went wrong. ' + errorMessage);
+				toast.error(
+					'Something went wrong. Sorry to see that :(' + errorMessage,
+				);
 			});
 		console.log(authCtx.name);
 	};

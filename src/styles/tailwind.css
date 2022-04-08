@@ -20,7 +20,7 @@
 }
 
 .active {
-	@apply bg-violetPrimary rounded-2xl text-white hover:text-black;
+	@apply bg-violetPrimary rounded-2xl text-white pointer-events-none;
 }
 
 .no-scrollbar {
