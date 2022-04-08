@@ -23,7 +23,7 @@ const Page: React.FC<{ title: string }> = (props) => {
 			});
 	};
 	return (
-		<div className='py-[40px] px-[30px] flex-1 relative overflow-auto scrollbar scroll-smooth'>
+		<div className='py-[40px] px-[30px] flex-1 relative overflow-auto scrollbar'>
 			<Toaster position='top-center' />
 
 			<div className='flex justify-between items-center'>
