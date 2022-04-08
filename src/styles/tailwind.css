@@ -22,3 +22,31 @@
 .active {
 	@apply bg-violetPrimary rounded-2xl text-white hover:text-black;
 }
+
+.no-scrollbar {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
+.scrollbar::-webkit-scrollbar {
+	width: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+	border-radius: 50px;
+	background: #e8edf3;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+	background: #b3bbf7;
+	border-radius: 50px;
+	border: 1px solid #f6f7ed;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+	background: #7a89fe;
+}

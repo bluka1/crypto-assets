@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 
 import { ReactComponent as SearchIcon } from '../assets/search.svg';
-import { ReactComponent as StarIcon } from '../assets/star.svg';
-import { ReactComponent as ChartIcon } from '../assets/chart-bar.svg';
 
 import Page from '../components/Page';
 import Currency from '../components/Currency';
@@ -26,7 +24,7 @@ const Dashboard: React.FC<{}> = (props) => {
 	const [currencies, setCurrencies] = useState<CurrencyType[]>([]);
 
 	useEffect(() => {
-		fetch('https://api.coincap.io/v2/assets?limit=10')
+		fetch('https://api.coincap.io/v2/assets?limit=20')
 			.then((res) => res.json())
 			.then((data) => {
 				let currenciesArray: CurrencyType[] = [];
@@ -58,8 +56,8 @@ const Dashboard: React.FC<{}> = (props) => {
 			</div>
 
 			{/* MAIN */}
-			<div className=' mt-[35px]'>
-				<div className='grid grid-cols-8 mb-[20px] place-items-center p-[15px]'>
+			<div className=' mt-[35px] overflow-auto'>
+				<div className=' grid grid-cols-currency mb-[20px] place-items-center p-[15px] border-b-[1px] border-gray-200 sticky top-0'>
 					<p>Rank</p>
 					<p>Name</p>
 					<p>Symbol</p>
@@ -76,73 +74,14 @@ const Dashboard: React.FC<{}> = (props) => {
 							rank={curr.rank}
 							name={curr.name}
 							symbol={curr.symbol}
-							price={Math.round((curr.priceUsd * 100) / 100)}
-							volume={Math.round((curr.volumeUsd24Hr * 100) / 100)}
-							supply={Math.round((curr.supply * 100) / 100)}
-							change={Math.round((curr.changePercent24Hr * 100) / 100)}
-							// price={curr.priceUsd}
-							// volume={curr.volumeUsd24Hr}
-							// supply={curr.supply}
-							// change={curr.changePercent24Hr}
+							price={curr.priceUsd}
+							volume={curr.volumeUsd24Hr}
+							supply={curr.supply}
+							change={curr.changePercent24Hr}
+							maxSupply={curr.maxSupply}
 						/>
 					))}
 				</div>
-				{/* <div className='grid grid-cols-8 place-items-center p-[15px] border-b-[1px] border-grayPrimary drop-shadow-md'>
-					<div className='self-center'>
-					<StarIcon className='w-[18px] h-[18px] cursor-pointer' />
-					</div>
-					<p>Bitcoin</p>
-					<p>BTC</p>
-					<p>$ 40 000,00</p>
-					<p>$ 1 000 000 000</p>
-					<p>90%</p>
-					<p>+10%</p>
-					<div>
-					<ChartIcon className='w-[30px] h-[30px] text-violetPrimary cursor-pointer place-self-center' />
-					</div>
-				</div>
-				<div className='grid grid-cols-8 place-items-center p-[15px] border-b-[1px] border-grayPrimary drop-shadow-md'>
-					<div className='self-center'>
-						<StarIcon className='w-[18px] h-[18px] cursor-pointer' />
-					</div>
-					<p>Ethereum</p>
-					<p>ETH</p>
-					<p>$ 4 000,00</p>
-					<p>$ 1 000 000 000</p>
-					<p>~%</p>
-					<p>+20%</p>
-					<div>
-						<ChartIcon className='w-[30px] h-[30px] text-violetPrimary cursor-pointer place-self-center' />
-					</div>
-				</div>
-				<div className='grid grid-cols-8 place-items-center p-[15px] border-b-[1px] border-grayPrimary drop-shadow-md'>
-					<div className='self-center'>
-						<StarIcon className='w-[18px] h-[18px] cursor-pointer' />
-					</div>
-					<p>Polkadot</p>
-					<p>DOT</p>
-					<p>$ 40,00</p>
-					<p>$ 1 000 000 000</p>
-					<p>80%</p>
-					<p>~%</p>
-					<div>
-						<ChartIcon className='w-[30px] h-[30px] text-violetPrimary cursor-pointer place-self-center' />
-					</div>
-				</div>
-				<div className='grid grid-cols-8 place-items-center p-[15px] border-b-[1px] border-grayPrimary drop-shadow-md'>
-					<div className='self-center'>
-						<StarIcon className='w-[18px] h-[18px] cursor-pointer' />
-					</div>
-					<p>Bitcoin</p>
-					<p>BTC</p>
-					<p>$ 40 000,00</p>
-					<p>$ 1 000 000 000</p>
-					<p>90%</p>
-					<p>+10%</p>
-					<div>
-						<ChartIcon className='w-[30px] h-[30px] text-violetPrimary cursor-pointer place-self-center' />
-					</div>
-				</div> */}
 			</div>
 		</Page>
 	);

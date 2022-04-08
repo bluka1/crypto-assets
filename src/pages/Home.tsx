@@ -13,17 +13,11 @@ const Home = (props: any) => {
 	}, [navigate, location]);
 
 	return (
-		<div className='h-screen w-screen max-w-[1440px] bg-stone-50 flex border-2 border-grayPrimary'>
+		<div className='h-screen w-screen bg-stone-50 flex border-2 border-grayPrimary'>
 			{/* LEFT SIDE */}
 			<Navbar />
 
 			{/* RIGHT SIDE */}
-			{/* <div className=''>
-				<div>
-					<h1></h1>
-					<button></button>
-				</div>
-			</div> */}
 			<Outlet />
 		</div>
 	);

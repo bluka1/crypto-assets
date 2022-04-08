@@ -1,23 +1,25 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import {
 	GoogleAuthProvider,
 	signInWithPopup,
-	signOut,
 	onAuthStateChanged,
 } from 'firebase/auth';
 import toast, { Toaster } from 'react-hot-toast';
-
 import { auth, provider, writeUserName } from './firebase';
+
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import Market from './pages/Market';
 import Settings from './pages/Settings';
 import Favorites from './pages/Favorites';
+import AuthContext from './store/auth-context';
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+
+	const authCtx = useContext(AuthContext);
 
 	onAuthStateChanged(auth, (user) => {
 		if (user) {
@@ -30,11 +32,17 @@ function App() {
 	const logIn = () => {
 		signInWithPopup(auth, provider)
 			.then((result) => {
-				// This gives you a Google Access Token. You can use it to access the Google API.
 				const credential = GoogleAuthProvider.credentialFromResult(result);
 				const token = credential?.accessToken;
-				// The signed-in user info.
 				const user = result.user;
+				writeUserName(user.displayName!, [
+					'bitcoin',
+					'ethereum',
+					'polkadot',
+					'cardano',
+					'solana',
+				]);
+				authCtx.nameHandler(user.displayName!);
 				toast.success('You successfully signed in.');
 			})
 			.catch((error) => {
@@ -45,16 +53,7 @@ function App() {
 				const credential = GoogleAuthProvider.credentialFromError(error);
 				toast.error('Something went wrong. ' + errorMessage);
 			});
-	};
-
-	const logOut = () => {
-		signOut(auth)
-			.then(() => {
-				toast.success('You successfully signed out.');
-			})
-			.catch((error) => {
-				toast.error('Something went wrong. ' + error.message);
-			});
+		console.log(authCtx.name);
 	};
 
 	return (
@@ -66,7 +65,7 @@ function App() {
 			{!isLoading && isLoggedIn && (
 				<>
 					<Routes>
-						<Route path='/' element={<Home onLogout={logOut} />}>
+						<Route path='/' element={<Home />}>
 							<Route path='dashboard' element={<Dashboard />} />
 							<Route path='market' element={<Market />} />
 							<Route path='favorites' element={<Favorites />} />

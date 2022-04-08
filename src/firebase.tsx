@@ -1,7 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, set } from 'firebase/database';
 import { GoogleAuthProvider, getAuth } from 'firebase/auth';
-import { Collection } from 'typescript';
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyDAiFupiXHUVw4vxxJazuXweq5GgCIlbls',
@@ -24,6 +23,7 @@ export const provider = new GoogleAuthProvider();
 // REALTIME DB
 export const db = getDatabase(app);
 
+// WRITE USERNAME TO DB
 export function writeUserName(userName: string, favorites: string[]) {
 	set(ref(db, 'users/' + userName), {
 		username: userName,
