@@ -23,6 +23,8 @@ type CurrencyType = {
 const Dashboard: React.FC<{}> = (props) => {
 	const [currencies, setCurrencies] = useState<CurrencyType[]>([]);
 
+	const [filterCurrencies, setFilterCurrencies] = useState('');
+
 	useEffect(() => {
 		fetch('https://api.coincap.io/v2/assets?limit=20')
 			.then((res) => res.json())
@@ -48,6 +50,8 @@ const Dashboard: React.FC<{}> = (props) => {
 						type='text'
 						placeholder='Search'
 						className='text-[14px] pl-[10px] border-none outline-none '
+						value={filterCurrencies}
+						onChange={(e) => setFilterCurrencies(e.target.value)}
 					/>
 					<div className='bg-violetPrimary rounded-[10px] cursor-pointer'>
 						<SearchIcon className='h-[30px] w-[30px] p-[8px] text-white' />
@@ -68,19 +72,33 @@ const Dashboard: React.FC<{}> = (props) => {
 					<p>Info</p>
 				</div>
 				<div>
-					{currencies.map((curr) => (
-						<Currency
-							key={curr.id}
-							rank={curr.rank}
-							name={curr.name}
-							symbol={curr.symbol}
-							price={curr.priceUsd}
-							volume={curr.volumeUsd24Hr}
-							supply={curr.supply}
-							change={curr.changePercent24Hr}
-							maxSupply={curr.maxSupply}
-						/>
-					))}
+					{currencies
+						.filter((curr) => {
+							if (filterCurrencies === '') {
+								return curr;
+							} else if (
+								curr.id.includes(filterCurrencies.toLowerCase()) ||
+								curr.symbol
+									.toLowerCase()
+									.includes(filterCurrencies.toLowerCase()) ||
+								curr.name.toLowerCase().includes(filterCurrencies.toLowerCase())
+							) {
+								return curr;
+							}
+						})
+						.map((curr) => (
+							<Currency
+								key={curr.id}
+								rank={curr.rank}
+								name={curr.name}
+								symbol={curr.symbol}
+								price={curr.priceUsd}
+								volume={curr.volumeUsd24Hr}
+								supply={curr.supply}
+								change={curr.changePercent24Hr}
+								maxSupply={curr.maxSupply}
+							/>
+						))}
 				</div>
 			</div>
 		</Page>
