@@ -15,6 +15,12 @@ function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [loading, setLoading] = useState(true);
 
+	const loginHandler = () => {
+		setLoading(true);
+		logIn();
+		setLoading(false);
+	};
+
 	onAuthStateChanged(auth, (user) => {
 		if (user) {
 			setIsLoggedIn(true);
@@ -24,40 +30,52 @@ function App() {
 		setLoading(false);
 	});
 
+	let content;
+
+	if (loading) {
+		content = <Loading />;
+	}
+
+	if (!loading && isLoggedIn) {
+		content = (
+			<>
+				<Routes>
+					<Route path="/" element={<Home />}>
+						<Route path="dashboard" element={<Dashboard />} />
+						<Route path="market" element={<Market />} />
+						<Route path="favorites" element={<Favorites />} />
+						<Route path="settings" element={<Settings />} />
+					</Route>
+				</Routes>
+			</>
+		);
+	}
+
+	if (!loading && !isLoggedIn) {
+		content = (
+			<>
+				<div className="appContent">
+					<img className="logo" src="/images/logo.jpg" alt="logo" />
+					<h1 className="logoText">Crypto Assets</h1>
+				</div>
+				<button className="signInButton" onClick={loginHandler}>
+					<img
+						className="signInWithGoogleIcon"
+						src="/images/google.jpg"
+						alt="google sign"
+					/>
+					Sign In with Google
+				</button>
+			</>
+		);
+	}
+
 	return (
-		<div className='app'>
+		<div className="app">
 			<div>
-				<Toaster position='top-center' />
+				<Toaster position="top-center" />
 			</div>
-			{loading && <Loading />}
-			{!loading && isLoggedIn && (
-				<>
-					<Routes>
-						<Route path='/' element={<Home />}>
-							<Route path='dashboard' element={<Dashboard />} />
-							<Route path='market' element={<Market />} />
-							<Route path='favorites' element={<Favorites />} />
-							<Route path='settings' element={<Settings />} />
-						</Route>
-					</Routes>
-				</>
-			)}
-			{!loading && !isLoggedIn && (
-				<>
-					<div className='appContent'>
-						<img className='logo' src='/images/logo.jpg' alt='logo' />
-						<h1 className='logoText'>Crypto Assets</h1>
-					</div>
-					<button className='signInButton' onClick={logIn}>
-						<img
-							className='signInWithGoogleIcon'
-							src='/images/google.jpg'
-							alt='google sign'
-						/>
-						Sign In with Google
-					</button>
-				</>
-			)}
+			{content}
 		</div>
 	);
 }
