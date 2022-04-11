@@ -10,6 +10,7 @@ import Market from './pages/Market';
 import Settings from './pages/Settings';
 import Favorites from './pages/Favorites';
 import Loading from './components/Loading/Loading';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -41,10 +42,38 @@ function App() {
 			<>
 				<Routes>
 					<Route path="/" element={<Home />}>
-						<Route path="dashboard" element={<Dashboard />} />
-						<Route path="market" element={<Market />} />
-						<Route path="favorites" element={<Favorites />} />
-						<Route path="settings" element={<Settings />} />
+						<Route
+							path="dashboard"
+							element={
+								<ProtectedRoute user={isLoggedIn}>
+									<Dashboard />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="market"
+							element={
+								<ProtectedRoute user={isLoggedIn}>
+									<Market />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="favorites"
+							element={
+								<ProtectedRoute user={isLoggedIn}>
+									<Favorites />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="settings"
+							element={
+								<ProtectedRoute user={isLoggedIn}>
+									<Settings />
+								</ProtectedRoute>
+							}
+						/>
 					</Route>
 				</Routes>
 			</>

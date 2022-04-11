@@ -116,10 +116,7 @@ const Dashboard: React.FC<{}> = (props) => {
 				)}
 				{currencies.length > 0 && offset !== null && (
 					<div className="flex justify-center items-center pt-6">
-						<button
-							className="bg-violetPrimary text-white rounded-full animate-pulse py-2 px-4"
-							onClick={offsetHandler}
-						>
+						<button className="loadmoreButton" onClick={offsetHandler}>
 							Load more...
 						</button>
 					</div>

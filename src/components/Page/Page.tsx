@@ -2,10 +2,14 @@ import { Toaster } from 'react-hot-toast';
 
 import { logOut } from '../../firebase';
 import { ReactComponent as LeaveIcon } from '../../assets/sign-out.svg';
+import { useNavigate } from 'react-router-dom';
 
 const Page: React.FC<{ title: string }> = (props) => {
+	const navigate = useNavigate();
+
 	const logoutHandler = () => {
 		logOut();
+		navigate('/');
 	};
 	return (
 		<div className="page">
