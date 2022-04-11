@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar/Navbar';
 
-const Home = (props: any) => {
+const Home = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -13,11 +13,8 @@ const Home = (props: any) => {
 	}, [navigate, location]);
 
 	return (
-		<div className='h-screen w-screen bg-stone-50 flex border-2 border-grayPrimary'>
-			{/* LEFT SIDE */}
+		<div className='home'>
 			<Navbar />
-
-			{/* RIGHT SIDE */}
 			<Outlet />
 		</div>
 	);

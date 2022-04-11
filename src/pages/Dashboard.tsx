@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { ReactComponent as SearchIcon } from '../assets/search.svg';
 
-import Page from '../components/Page';
-import Currency from '../components/Currency';
+import Page from '../components/Page/Page';
+import Currency from '../components/Currency/Currency';
+import useDebounce from '../hooks/useDebounce';
+import Loading from '../components/Loading/Loading';
 
 type CurrencyType = {
 	id: string;
@@ -22,57 +24,65 @@ type CurrencyType = {
 
 const Dashboard: React.FC<{}> = (props) => {
 	const [currencies, setCurrencies] = useState<CurrencyType[]>([]);
-
 	const [filterCurrencies, setFilterCurrencies] = useState('');
+	const [loading, setLoading] = useState(true);
 
-	const filterHandler = (e: React.FormEvent<HTMLInputElement>) => {
-		setFilterCurrencies(e.currentTarget.value);
-		console.log(e.currentTarget.value);
-	};
+	const debouncedSearch = useDebounce(filterCurrencies, 1000);
 
 	useEffect(() => {
-		setTimeout(() => {
-			fetch(`https://api.coincap.io/v2/assets?search=${filterCurrencies}`)
-				.then((res) => res.json())
+		async function fetchData() {
+			setCurrencies([]);
+			const data = await fetch(
+				`https://api.coincap.io/v2/assets?search=${debouncedSearch}`,
+			);
+			const response = data
+				.json()
 				.then((data) => {
-					let currenciesArray: CurrencyType[] = [];
-					data.data.map((currency: CurrencyType) =>
-						currenciesArray.push(currency),
-					);
-					setCurrencies((prevState: CurrencyType[]) => {
-						return [...currenciesArray];
-					});
+					setCurrencies([...data.data]);
 				})
-				.catch((err) => console.log(err.message));
-		}, 1000);
+				.catch((err) => alert(err.message));
+		}
 
-		return () => {
-			clearTimeout();
-		};
+		if (debouncedSearch) {
+			fetchData();
+			setLoading(false);
+		}
+	}, [debouncedSearch]);
+
+	useEffect(() => {
+		async function fetchAllData() {
+			const data = await fetch(`https://api.coincap.io/v2/assets?limit=30`);
+			const response = data
+				.json()
+				.then((data) => setCurrencies([...data.data]))
+				.catch((err) => alert(err.message));
+		}
+		if (!filterCurrencies) {
+			fetchAllData();
+			setLoading(false);
+		}
 	}, [filterCurrencies]);
 
 	return (
 		<Page title='Dashboard'>
-			{/* TOP */}
-			<div className='flex justify-between items-center '>
+			<div className='pageMainContentHeader'>
 				<h3>Dashboard</h3>
-				<div className='p-[2px] border-[1px] border-graySecondary rounded-xl flex items-center'>
+				<div className='searchContainer'>
 					<input
 						type='text'
 						placeholder='Search'
-						className='text-[14px] pl-[10px] border-none outline-none '
+						className='searchInput'
 						value={filterCurrencies}
-						onChange={filterHandler}
+						onChange={(e) => setFilterCurrencies(e.target.value)}
 					/>
-					<div className='bg-violetPrimary rounded-[10px] cursor-pointer'>
-						<SearchIcon className='h-[30px] w-[30px] p-[8px] text-white' />
+					<div className='searchIconContainer'>
+						<SearchIcon className='searchIcon' />
 					</div>
 				</div>
 			</div>
 
-			{/* MAIN */}
-			<div className=''>
-				<div className=' grid grid-cols-currency mb-[20px] mt-[35px] place-items-center p-[15px] border-b-[1px] bg-white z-10 border-gray-200 sticky top-[-40px]'>
+			<div>
+				<div className='pageMainContentGrid'>
 					<p>Rank</p>
 					<p>Name</p>
 					<p>Symbol</p>
@@ -82,21 +92,24 @@ const Dashboard: React.FC<{}> = (props) => {
 					<p>24h Change</p>
 					<p>Info</p>
 				</div>
-				<div>
-					{currencies.map((curr) => (
-						<Currency
-							key={curr.id}
-							rank={curr.rank}
-							name={curr.name}
-							symbol={curr.symbol}
-							price={curr.priceUsd}
-							volume={curr.volumeUsd24Hr}
-							supply={curr.supply}
-							change={curr.changePercent24Hr}
-							maxSupply={curr.maxSupply}
-						/>
-					))}
-				</div>
+				{!loading && (
+					<div>
+						{currencies.map((curr) => (
+							<Currency
+								key={curr.id}
+								rank={curr.rank}
+								name={curr.name}
+								symbol={curr.symbol}
+								price={curr.priceUsd}
+								volume={curr.volumeUsd24Hr}
+								supply={curr.supply}
+								change={curr.changePercent24Hr}
+								maxSupply={curr.maxSupply}
+							/>
+						))}
+						{loading && <Loading />}
+					</div>
+				)}
 			</div>
 		</Page>
 	);

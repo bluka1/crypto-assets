@@ -1,25 +1,19 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import {
-	GoogleAuthProvider,
-	signInWithPopup,
-	onAuthStateChanged,
-} from 'firebase/auth';
-import toast, { Toaster } from 'react-hot-toast';
-import { auth, provider, writeUserName } from './firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { Toaster } from 'react-hot-toast';
+import { auth, logIn } from './firebase';
 
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import Market from './pages/Market';
 import Settings from './pages/Settings';
 import Favorites from './pages/Favorites';
-import AuthContext from './store/auth-context';
+import Loading from './components/Loading/Loading';
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
-
-	const authCtx = useContext(AuthContext);
+	const [loading, setLoading] = useState(true);
 
 	onAuthStateChanged(auth, (user) => {
 		if (user) {
@@ -27,59 +21,16 @@ function App() {
 		} else {
 			setIsLoggedIn(false);
 		}
+		setLoading(false);
 	});
 
-	const logIn = () => {
-		signInWithPopup(auth, provider)
-			.then((result) => {
-				const credential = GoogleAuthProvider.credentialFromResult(result);
-				const token = credential?.accessToken;
-				const user = result.user;
-				writeUserName(user.displayName!, [
-					'bitcoin',
-					'ethereum',
-					'polkadot',
-					'cardano',
-					'solana',
-				]);
-				authCtx.nameHandler(user.displayName!);
-				toast.success(
-					`Welcome ${user.displayName}! Hope that you will enjoy using/testing this web app :)`,
-					{
-						duration: 3500,
-						style: {
-							border: '1px solid green',
-							padding: '16px',
-							color: '#7a89fe',
-							textAlign: 'center',
-						},
-						iconTheme: {
-							primary: '#7a89fe',
-							secondary: '#e8edf3',
-						},
-					},
-				);
-			})
-			.catch((error) => {
-				// Handle Errors here.
-				const errorCode = error.code;
-				const errorMessage = error.message;
-				const email = error.email;
-				const credential = GoogleAuthProvider.credentialFromError(error);
-				toast.error(
-					'Something went wrong. Sorry to see that :(' + errorMessage,
-				);
-			});
-		console.log(authCtx.name);
-	};
-
 	return (
-		<div className='flex flex-col items-center justify-center h-screen bg-stone-50 font-body'>
+		<div className='app'>
 			<div>
 				<Toaster position='top-center' />
 			</div>
-			{isLoading && <img src='/images/loading.gif' alt='loading' />}
-			{!isLoading && isLoggedIn && (
+			{loading && <Loading />}
+			{!loading && isLoggedIn && (
 				<>
 					<Routes>
 						<Route path='/' element={<Home />}>
@@ -91,22 +42,15 @@ function App() {
 					</Routes>
 				</>
 			)}
-			{!isLoading && !isLoggedIn && (
+			{!loading && !isLoggedIn && (
 				<>
-					<div className='flex justify-center items-center p-[20px] lg:p-[38px] border-b-2 border-grayPrimary font-semibold'>
-						<img
-							className='mr-[32px] rounded-full'
-							src='/images/logo.jpg'
-							alt='logo'
-						/>
-						<h1 className='text-[40px] lg:text-[64px]'>Crypto Assets</h1>
+					<div className='appContent'>
+						<img className='logo' src='/images/logo.jpg' alt='logo' />
+						<h1 className='logoText'>Crypto Assets</h1>
 					</div>
-					<button
-						className='flex justify-center items-center mt-[42px] px-14 py-2 rounded-lg border-2 border-grayPrimary'
-						onClick={logIn}
-					>
+					<button className='signInButton' onClick={logIn}>
 						<img
-							className='mr-[10px]'
+							className='signInWithGoogleIcon'
 							src='/images/google.jpg'
 							alt='google sign'
 						/>
