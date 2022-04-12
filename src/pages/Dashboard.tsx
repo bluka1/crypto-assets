@@ -64,25 +64,25 @@ const Dashboard: React.FC<{}> = (props) => {
 	}, [filterCurrencies]);
 
 	return (
-		<Page title="Dashboard">
-			<div className="pageMainContentHeader">
+		<Page title='Dashboard'>
+			<div className='pageMainContentHeader'>
 				<h3>Dashboard</h3>
-				<div className="searchContainer">
+				<div className='searchContainer'>
 					<input
-						type="text"
-						placeholder="Search"
-						className="searchInput"
+						type='text'
+						placeholder='Search'
+						className='searchInput'
 						value={filterCurrencies}
 						onChange={(e) => setFilterCurrencies(e.target.value)}
 					/>
-					<div className="searchIconContainer">
-						<SearchIcon className="searchIcon" />
+					<div className='searchIconContainer'>
+						<SearchIcon className='searchIcon' />
 					</div>
 				</div>
 			</div>
 
 			<div>
-				<div className="pageMainContentGrid">
+				<div className='pageMainContentGrid'>
 					<p>Rank</p>
 					<p>Name</p>
 					<p>Symbol</p>
