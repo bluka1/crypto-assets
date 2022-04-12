@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { Toaster } from 'react-hot-toast';
-import { auth, db, logIn } from './firebase';
+import { auth, logIn } from './firebase';
 
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
@@ -11,43 +11,19 @@ import Settings from './pages/Settings';
 import Favorites from './pages/Favorites';
 import Loading from './components/Loading/Loading';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
-import AuthContext from './store/auth-context';
-import { child, get, ref } from 'firebase/database';
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [loading, setLoading] = useState(true);
 
-	const authCtx = useContext(AuthContext);
-
-	const navigate = useNavigate();
-
-	const readUser = (username: string | null) => {
-		const dbRef = ref(db);
-		const user = get(child(dbRef, `users/${username}`))
-			.then((user) => {
-				if (user.exists()) {
-					authCtx.nameHandler(user.val().username);
-					authCtx.favoritesHandler(user.val().favorites);
-				} else {
-					return null;
-				}
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	};
-
 	const loginHandler = () => {
 		setLoading(true);
 		logIn();
-		navigate('/');
 		setLoading(false);
 	};
 
 	onAuthStateChanged(auth, (user) => {
 		if (user) {
-			readUser(user.displayName);
 			setIsLoggedIn(true);
 		} else {
 			setIsLoggedIn(false);
@@ -106,27 +82,20 @@ function App() {
 
 	if (!loading && !isLoggedIn) {
 		content = (
-			<Routes>
-				<Route
-					path="/login"
-					element={
-						<>
-							<div className="appContent">
-								<img className="logo" src="/images/logo.jpg" alt="logo" />
-								<h1 className="logoText">Crypto Assets</h1>
-							</div>
-							<button className="signInButton" onClick={loginHandler}>
-								<img
-									className="signInWithGoogleIcon"
-									src="/images/google.jpg"
-									alt="google sign"
-								/>
-								Sign In with Google
-							</button>
-						</>
-					}
-				></Route>
-			</Routes>
+			<>
+				<div className="appContent">
+					<img className="logo" src="/images/logo.jpg" alt="logo" />
+					<h1 className="logoText">Crypto Assets</h1>
+				</div>
+				<button className="signInButton" onClick={loginHandler}>
+					<img
+						className="signInWithGoogleIcon"
+						src="/images/google.jpg"
+						alt="google sign"
+					/>
+					Sign In with Google
+				</button>
+			</>
 		);
 	}
 
