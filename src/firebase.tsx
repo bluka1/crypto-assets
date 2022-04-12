@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, set } from 'firebase/database';
+import { child, get, getDatabase, onValue, ref, set } from 'firebase/database';
 import {
 	GoogleAuthProvider,
 	getAuth,
