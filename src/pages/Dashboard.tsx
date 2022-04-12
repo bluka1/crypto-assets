@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ReactComponent as SearchIcon } from '../assets/search.svg';
 
@@ -24,15 +24,10 @@ type CurrencyType = {
 
 const Dashboard: React.FC<{}> = (props) => {
 	const [currencies, setCurrencies] = useState<CurrencyType[]>([]);
-	const [offset, setOffset] = useState<number>(0);
 	const [filterCurrencies, setFilterCurrencies] = useState('');
 	const [loading, setLoading] = useState(true);
 
 	const debouncedSearch = useDebounce(filterCurrencies, 1000);
-
-	const offsetHandler = () => {
-		setOffset(currencies.length);
-	};
 
 	useEffect(() => {
 		async function fetchData() {
@@ -56,21 +51,17 @@ const Dashboard: React.FC<{}> = (props) => {
 
 	useEffect(() => {
 		async function fetchAllData() {
-			const data = await fetch(
-				`https://api.coincap.io/v2/assets?limit=30&offset=${offset}`,
-			);
+			const data = await fetch(`https://api.coincap.io/v2/assets?limit=30`);
 			const response = data
 				.json()
-				.then((data) =>
-					setCurrencies((prevState) => [...prevState, ...data.data]),
-				)
+				.then((data) => setCurrencies([...data.data]))
 				.catch((err) => alert(err.message));
 		}
 		if (!filterCurrencies) {
 			fetchAllData();
 			setLoading(false);
 		}
-	}, [filterCurrencies, offset]);
+	}, [filterCurrencies]);
 
 	return (
 		<Page title="Dashboard">
@@ -101,24 +92,22 @@ const Dashboard: React.FC<{}> = (props) => {
 					<p>24h Change</p>
 					<p>Info</p>
 				</div>
-				{currencies.length === 0 && (
-					<h1 className="flex justify-center items-center p-4">
-						No data fetched
-					</h1>
-				)}
 				{!loading && (
 					<div>
 						{currencies.map((curr) => (
-							<Currency curr={curr} key={curr.id} />
+							<Currency
+								key={curr.id}
+								rank={curr.rank}
+								name={curr.name}
+								symbol={curr.symbol}
+								price={curr.priceUsd}
+								volume={curr.volumeUsd24Hr}
+								supply={curr.supply}
+								change={curr.changePercent24Hr}
+								maxSupply={curr.maxSupply}
+							/>
 						))}
 						{loading && <Loading />}
-					</div>
-				)}
-				{currencies.length > 0 && offset !== null && (
-					<div className="flex justify-center items-center pt-6">
-						<button className="loadmoreButton" onClick={offsetHandler}>
-							Load more...
-						</button>
 					</div>
 				)}
 			</div>

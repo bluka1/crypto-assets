@@ -133,7 +133,7 @@
 }
 
 .currencyGrowth {
-	@apply flex gap-[3px] text-[14px] items-center text-green-600;
+	@apply flex text-[14px] items-center text-green-600;
 }
 
 .growthIcon {
@@ -141,7 +141,7 @@
 }
 
 .currencyFall {
-	@apply flex gap-[3px] text-[14px] items-center text-red-600;
+	@apply flex text-[14px] items-center text-red-600;
 }
 
 .fallIcon {

@@ -3,62 +3,56 @@ import { ReactComponent as ArrowDownIcon } from '../../assets/arrow-down.svg';
 import { ReactComponent as ChartIcon } from '../../assets/chart-bar.svg';
 
 const Currency: React.FC<{
-	curr: {
-		id: string;
-		rank: string;
-		symbol: string;
-		name: string;
-		supply: number;
-		maxSupply: number;
-		marketCapUsd: number;
-		volumeUsd24Hr: number;
-		priceUsd: number;
-		changePercent24Hr: number;
-		vWap24Hr: number;
-		explorer: string;
-	};
-}> = ({ curr }) => {
-	const formatPrice = (num: number) => {
-		return Number(num).toLocaleString(undefined, {
-			minimumFractionDigits: 2,
-			maximumFractionDigits: 2,
-		});
-	};
-
-	const formatSupply = (num: number) => {
-		return Number(Math.round(num)).toLocaleString();
-	};
-
-	const formatPercent = (num: number) => {
-		return Number(num).toFixed(2);
-	};
+	rank: string;
+	name: string;
+	symbol: string;
+	price: number;
+	volume: number;
+	supply: number;
+	change: number;
+	maxSupply: number;
+}> = (props) => {
 	return (
-		<div className="currencyGrid">
-			<p className="currencyText">{curr.rank}</p>
-			<p className="currencyText">{curr.name}</p>
-			<p className="currencyText">{curr.symbol}</p>
-			<p className="currencyText">$ {formatPrice(curr.priceUsd)}</p>
-			<p className="currencyText">$ {formatPrice(curr.volumeUsd24Hr)}</p>
-			<p className="currencyText">
-				{curr.maxSupply
-					? formatSupply((curr.supply / curr.maxSupply) * 100)
-					: formatSupply(curr.supply)}
-				{curr.maxSupply ? ' %' : ''}
+		<div className='currencyGrid'>
+			<p className='currencyText'>{props.rank}</p>
+			<p className='currencyText'>{props.name}</p>
+			<p className='currencyText'>{props.symbol}</p>
+			<p className='currencyText'>
+				${' '}
+				{Number(props.price).toLocaleString(undefined, {
+					minimumFractionDigits: 2,
+					maximumFractionDigits: 2,
+				})}
 			</p>
-			{curr.changePercent24Hr > 0 ? (
-				<div className="currencyGrowth">
-					{<ArrowUpIcon className="growthIcon" />}&nbsp;{' '}
-					{formatPercent(curr.changePercent24Hr)}%
+			<p className='currencyText'>
+				${' '}
+				{Number(props.volume).toLocaleString(undefined, {
+					minimumFractionDigits: 2,
+					maximumFractionDigits: 2,
+				})}
+			</p>
+			<p className='currencyText'>
+				{props.maxSupply
+					? Number(
+							Math.round((props.supply / props.maxSupply) * 100),
+					  ).toLocaleString()
+					: Number(Math.round(props.supply)).toLocaleString()}
+				{props.maxSupply ? ' %' : ''}
+			</p>
+			{props.change > 0 ? (
+				<div className='currencyGrowth'>
+					{<ArrowUpIcon className='growthIcon' />}&nbsp;{' '}
+					{Number(props.change).toFixed(2)}%
 				</div>
 			) : (
-				<div className="currencyFall">
-					{<ArrowDownIcon className="fallIcon" />}&nbsp;
-					{formatPercent(curr.changePercent24Hr)}%
+				<div className='currencyFall'>
+					{<ArrowDownIcon className='fallIcon' />}&nbsp;
+					{Number(props.change).toFixed(2)}%
 				</div>
 			)}
 
 			<div>
-				<ChartIcon className="currencyChartIcon" />
+				<ChartIcon className='currencyChartIcon' />
 			</div>
 		</div>
 	);

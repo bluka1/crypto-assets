@@ -61,8 +61,12 @@ export const logIn = () => {
 				},
 			);
 		})
-		.catch(({ message }) => {
-			toast.error('Something went wrong. Sorry to see that :(' + message);
+		.catch((error) => {
+			const errorCode = error.code;
+			const errorMessage = error.message;
+			const email = error.email;
+			const credential = GoogleAuthProvider.credentialFromError(error);
+			toast.error('Something went wrong. Sorry to see that :(' + errorMessage);
 		});
 };
 
@@ -73,7 +77,7 @@ export const logOut = () => {
 				duration: 3000,
 			});
 		})
-		.catch(({ message }) => {
-			toast.error('Something went wrong. ' + message);
+		.catch((error) => {
+			toast.error('Something went wrong. ' + error.message);
 		});
 };

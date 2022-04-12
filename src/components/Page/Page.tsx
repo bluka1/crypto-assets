@@ -2,20 +2,8 @@ import { Toaster } from 'react-hot-toast';
 
 import { logOut } from '../../firebase';
 import { ReactComponent as LeaveIcon } from '../../assets/sign-out.svg';
-import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
-import AuthContext from '../../store/auth-context';
 
 const Page: React.FC<{ title: string }> = (props) => {
-	const navigate = useNavigate();
-
-	const logoutHandler = () => {
-		navigate('/login');
-		logOut();
-	};
-
-	const authCtx = useContext(AuthContext);
-
 	return (
 		<div className="page">
 			<Toaster position="top-center" />
@@ -23,9 +11,9 @@ const Page: React.FC<{ title: string }> = (props) => {
 			<div className="pageHeader">
 				<h1 className="pageHeaderTitle">{props.title}</h1>
 				<button className="pageSignOutButton">
-					<div className="signOutContent" onClick={logoutHandler}>
+					<div className="signOutContent" onClick={logOut}>
 						<LeaveIcon className="signOutIcon" />
-						<span>{authCtx.name}</span>
+						<span>Sign out</span>
 					</div>
 				</button>
 			</div>
