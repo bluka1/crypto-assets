@@ -2,57 +2,61 @@ import { ReactComponent as ArrowUpIcon } from '../../assets/arrow-up.svg';
 import { ReactComponent as ArrowDownIcon } from '../../assets/arrow-down.svg';
 import { ReactComponent as ChartIcon } from '../../assets/chart-bar.svg';
 
-const Currency: React.FC<{
+type CurrencyType = {
+	id: string;
 	rank: string;
-	name: string;
 	symbol: string;
-	price: number;
-	volume: number;
+	name: string;
 	supply: number;
-	change: number;
 	maxSupply: number;
-}> = (props) => {
+	marketCapUsd: number;
+	volumeUsd24Hr: number;
+	priceUsd: number;
+	changePercent24Hr: number;
+	vWap24Hr: number;
+	explorer: string;
+};
+
+const Currency: React.FC<{ curr: CurrencyType }> = ({ curr }) => {
+	const formatPrice = (price: number) => {
+		return Number(price).toLocaleString(undefined, {
+			minimumFractionDigits: 2,
+			maximumFractionDigits: 2,
+		});
+	};
+	const formatSupply = (supply: number) => {
+		return Number(Math.round(supply)).toLocaleString();
+	};
+	const formatChange = (change: number) => {
+		return Number(change).toFixed(2);
+	};
 	return (
-		<div className='currencyGrid'>
-			<p className='currencyText'>{props.rank}</p>
-			<p className='currencyText'>{props.name}</p>
-			<p className='currencyText'>{props.symbol}</p>
-			<p className='currencyText'>
-				${' '}
-				{Number(props.price).toLocaleString(undefined, {
-					minimumFractionDigits: 2,
-					maximumFractionDigits: 2,
-				})}
+		<div className="currencyGrid">
+			<p className="currencyText">{curr.rank}</p>
+			<p className="currencyText">{curr.name}</p>
+			<p className="currencyText">{curr.symbol}</p>
+			<p className="currencyText">$ {formatPrice(curr.priceUsd)}</p>
+			<p className="currencyText">$ {formatPrice(curr.volumeUsd24Hr)}</p>
+			<p className="currencyText">
+				{curr.maxSupply
+					? formatSupply((curr.supply / curr.maxSupply) * 100)
+					: formatSupply(curr.supply)}
+				{curr.maxSupply ? ' %' : ''}
 			</p>
-			<p className='currencyText'>
-				${' '}
-				{Number(props.volume).toLocaleString(undefined, {
-					minimumFractionDigits: 2,
-					maximumFractionDigits: 2,
-				})}
-			</p>
-			<p className='currencyText'>
-				{props.maxSupply
-					? Number(
-							Math.round((props.supply / props.maxSupply) * 100),
-					  ).toLocaleString()
-					: Number(Math.round(props.supply)).toLocaleString()}
-				{props.maxSupply ? ' %' : ''}
-			</p>
-			{props.change > 0 ? (
-				<div className='currencyGrowth'>
-					{<ArrowUpIcon className='growthIcon' />}&nbsp;{' '}
-					{Number(props.change).toFixed(2)}%
+			{curr.changePercent24Hr > 0 ? (
+				<div className="currencyGrowth">
+					{<ArrowUpIcon className="growthIcon" />}&nbsp;{' '}
+					{formatChange(curr.changePercent24Hr)}%
 				</div>
 			) : (
-				<div className='currencyFall'>
-					{<ArrowDownIcon className='fallIcon' />}&nbsp;
-					{Number(props.change).toFixed(2)}%
+				<div className="currencyFall">
+					{<ArrowDownIcon className="fallIcon" />}&nbsp;
+					{formatChange(curr.changePercent24Hr)}%
 				</div>
 			)}
 
 			<div>
-				<ChartIcon className='currencyChartIcon' />
+				<ChartIcon className="currencyChartIcon" />
 			</div>
 		</div>
 	);

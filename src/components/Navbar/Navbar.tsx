@@ -9,32 +9,32 @@ import MenuIcon from '../MenuIcon/MenuIcon';
 
 const Navbar: React.FC = (props) => {
 	return (
-		<div className='navbar'>
-			<div className='navbarHeader'>
-				<img className='navbarLogo' src='/images/logo.jpg' alt='logo' />
-				<h1 className='navbarText'>Crypto Assets</h1>
+		<div className="navbar">
+			<div className="navbarHeader">
+				<img className="navbarLogo" src="/images/logo.jpg" alt="logo" />
+				<h1 className="navbarText">Crypto Assets</h1>
 			</div>
 
-			<div className='navbarMain'>
-				<div className='navbarMainItems'>
-					<NavLink to='/dashboard'>
+			<div className="navbarMain">
+				<div className="navbarMainItems">
+					<NavLink to="/">
 						<MenuIcon
-							icon={<DashIcon className='menuSvg' />}
-							text='Dashboard'
+							icon={<DashIcon className="menuSvg" />}
+							text="Dashboard"
 						/>
 					</NavLink>
-					<NavLink to='/market'>
-						<MenuIcon icon={<ChartIcon className='menuSvg' />} text='Market' />
+					<NavLink to="/market">
+						<MenuIcon icon={<ChartIcon className="menuSvg" />} text="Market" />
 					</NavLink>
-					<NavLink to='/favorites'>
+					<NavLink to="/favorites">
 						<MenuIcon
-							icon={<StarIcon className='menuSvg' />}
-							text='Favorites'
+							icon={<StarIcon className="menuSvg" />}
+							text="Favorites"
 						/>
 					</NavLink>
 				</div>
-				<NavLink to='/settings'>
-					<MenuIcon icon={<GearIcon className='menuSvg' />} text='Settings' />
+				<NavLink to="/settings">
+					<MenuIcon icon={<GearIcon className="menuSvg" />} text="Settings" />
 				</NavLink>
 			</div>
 		</div>

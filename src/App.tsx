@@ -4,12 +4,14 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { Toaster } from 'react-hot-toast';
 import { auth, logIn } from './firebase';
 
-import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import Market from './pages/Market';
 import Settings from './pages/Settings';
 import Favorites from './pages/Favorites';
 import Loading from './components/Loading/Loading';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import Login from './components/Login/Login';
+import UnProtectedRoute from './components/UnProtectedRoute/UnProtectedRoute';
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,32 +32,50 @@ function App() {
 				<Toaster position="top-center" />
 			</div>
 			{loading && <Loading />}
-			{!loading && isLoggedIn && (
+			{!loading && (
 				<>
 					<Routes>
-						<Route path="/" element={<Home />}>
-							<Route path="dashboard" element={<Dashboard />} />
-							<Route path="market" element={<Market />} />
-							<Route path="favorites" element={<Favorites />} />
-							<Route path="settings" element={<Settings />} />
-						</Route>
-					</Routes>
-				</>
-			)}
-			{!loading && !isLoggedIn && (
-				<>
-					<div className="appContent">
-						<img className="logo" src="/images/logo.jpg" alt="logo" />
-						<h1 className="logoText">Crypto Assets</h1>
-					</div>
-					<button className="signInButton" onClick={logIn}>
-						<img
-							className="signInWithGoogleIcon"
-							src="/images/google.jpg"
-							alt="google sign"
+						<Route
+							path="/login"
+							element={
+								<UnProtectedRoute user={isLoggedIn}>
+									<Login login={logIn} />
+								</UnProtectedRoute>
+							}
 						/>
-						Sign In with Google
-					</button>
+						<Route
+							path="/"
+							element={
+								<ProtectedRoute user={isLoggedIn}>
+									<Dashboard user={isLoggedIn} />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/market"
+							element={
+								<ProtectedRoute user={isLoggedIn}>
+									<Market />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/favorites"
+							element={
+								<ProtectedRoute user={isLoggedIn}>
+									<Favorites />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/settings"
+							element={
+								<ProtectedRoute user={isLoggedIn}>
+									<Settings />
+								</ProtectedRoute>
+							}
+						/>
+					</Routes>
 				</>
 			)}
 		</div>
