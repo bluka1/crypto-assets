@@ -1,6 +1,10 @@
 import { ReactComponent as ArrowUpIcon } from '../../assets/arrow-up.svg';
 import { ReactComponent as ArrowDownIcon } from '../../assets/arrow-down.svg';
 import { ReactComponent as ChartIcon } from '../../assets/chart-bar.svg';
+import { Link, useNavigate } from 'react-router-dom';
+import formatPrice from '../../utils/formatPrice';
+import formatSupply from '../../utils/formatSupply';
+import formatChange from '../../utils/formatChange';
 
 type CurrencyType = {
 	id: string;
@@ -18,18 +22,12 @@ type CurrencyType = {
 };
 
 const Currency: React.FC<{ curr: CurrencyType }> = ({ curr }) => {
-	const formatPrice = (price: number) => {
-		return Number(price).toLocaleString(undefined, {
-			minimumFractionDigits: 2,
-			maximumFractionDigits: 2,
-		});
+	const navigate = useNavigate();
+
+	const navigateHandler = () => {
+		navigate(`/${curr.id}`);
 	};
-	const formatSupply = (supply: number) => {
-		return Number(Math.round(supply)).toLocaleString();
-	};
-	const formatChange = (change: number) => {
-		return Number(change).toFixed(2);
-	};
+
 	return (
 		<div className="currencyGrid">
 			<p className="currencyText">{curr.rank}</p>
@@ -56,7 +54,7 @@ const Currency: React.FC<{ curr: CurrencyType }> = ({ curr }) => {
 			)}
 
 			<div>
-				<ChartIcon className="currencyChartIcon" />
+				<ChartIcon className="currencyChartIcon" onClick={navigateHandler} />
 			</div>
 		</div>
 	);

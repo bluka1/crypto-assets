@@ -12,6 +12,7 @@ import Loading from './components/Loading/Loading';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import Login from './components/Login/Login';
 import UnProtectedRoute from './components/UnProtectedRoute/UnProtectedRoute';
+import CryptoInfo from './components/CryptoInfo/CryptoInfo';
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -48,6 +49,14 @@ function App() {
 							element={
 								<ProtectedRoute user={isLoggedIn}>
 									<Dashboard user={isLoggedIn} />
+								</ProtectedRoute>
+							}
+						></Route>
+						<Route
+							path="/:currencyId"
+							element={
+								<ProtectedRoute user={isLoggedIn}>
+									<CryptoInfo />
 								</ProtectedRoute>
 							}
 						/>
