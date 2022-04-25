@@ -9,14 +9,18 @@ import MenuIcon from '../MenuIcon/MenuIcon';
 
 const Navbar: React.FC = (props) => {
 	return (
-		<div className="navbar">
-			<div className="navbarHeader">
-				<img className="navbarLogo" src="/images/logo.jpg" alt="logo" />
-				<h1 className="navbarText">Crypto Assets</h1>
+		<div className="py-[30px] px-[20px] bg-white w-[250px] flex flex-col">
+			<div className="flex justify-center items-center gap-[12px] pb-[36px] border-b-2 border-grayPrimary cursor-pointer">
+				<img
+					className="rounded-full w-[36px] h-[36px]"
+					src="/images/logo.jpg"
+					alt="logo"
+				/>
+				<h1 className="text-[22px] font-semibold">Crypto Assets</h1>
 			</div>
 
-			<div className="navbarMain">
-				<div className="navbarMainItems">
+			<div className="flex flex-1 flex-col justify-between pt-[35px]">
+				<div className="flex flex-col gap-[14px]">
 					<NavLink to="/">
 						<MenuIcon
 							icon={<DashIcon className="menuSvg" />}

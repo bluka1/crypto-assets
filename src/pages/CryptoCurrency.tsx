@@ -1,15 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
-import formatDate from '../../utils/formatDate';
-import Page from '../Page/Page';
-import Chart from '../ResponsiveChart/Chart';
+import formatDate from '../utils/formatDate';
+import Page from '../components/Page/Page';
+import Chart from '../components/ResponsiveChart/Chart';
+import Loading from '../components/Loading/Loading';
 
 type dataType = {
 	price: number;
 	date: string;
 };
 
-const CryptoInfo = () => {
+const CryptoCurrency = () => {
 	const params = useParams();
 	const [dataInfo, setDataInfo] = useState<dataType[]>();
 	const [loading, setLoading] = useState(false);
@@ -28,17 +30,20 @@ const CryptoInfo = () => {
 			.then((data) => {
 				setDataInfo(
 					data.data.map((value: { priceUsd: number; time: string }) => {
-						const fd = formatDate(value.time);
+						const formattedDate = formatDate(value.time);
 
 						return {
 							price: value.priceUsd,
-							date: fd,
+							date: formattedDate,
 						};
 					}),
 				);
+				setLoading(false);
 			})
-			.catch((err) => alert(err.message));
-		setLoading(false);
+			.catch((error) => {
+				setLoading(false);
+				toast.error('Error: ' + error.message);
+			});
 	}, []);
 
 	useEffect(() => {
@@ -47,9 +52,10 @@ const CryptoInfo = () => {
 
 	return (
 		<Page title={params.currencyId!.toUpperCase()}>
+			{loading && <Loading />}
 			<Chart data={dataInfo} />
 		</Page>
 	);
 };
 
-export default CryptoInfo;
+export default CryptoCurrency;

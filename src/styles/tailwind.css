@@ -4,160 +4,16 @@
 @tailwind components;
 @tailwind utilities;
 
-.loading {
-	@apply animate-pulse text-violetPrimary text-[32px] p-5 flex justify-center items-center;
-}
-
 .app {
 	@apply flex flex-col items-center justify-center h-screen bg-stone-50 font-body;
-}
-
-.appContent {
-	@apply flex justify-center items-center p-[20px] lg:p-[38px] border-b-2 border-grayPrimary font-semibold;
-}
-
-.logo {
-	@apply mr-[32px] rounded-full;
-}
-
-.logoText {
-	@apply text-[40px] lg:text-[64px];
-}
-
-.signInButton {
-	@apply flex justify-center items-center mt-[42px] px-14 py-2 rounded-lg border-2 border-grayPrimary;
-}
-
-.signInWithGoogleIcon {
-	@apply mr-[10px];
-}
-
-.menuIcon {
-	@apply flex gap-[10px] justify-start p-[16px] items-center hover:bg-violet-50 rounded-2xl cursor-pointer;
 }
 
 .menuSvg {
 	@apply w-[16px] h-[16px];
 }
 
-.navbar {
-	@apply py-[30px] px-[20px] bg-white w-[250px] flex flex-col;
-}
-
-.navbarHeader {
-	@apply flex justify-center items-center gap-[12px] pb-[36px] border-b-2 border-grayPrimary cursor-pointer;
-}
-
-.navbarLogo {
-	@apply rounded-full w-[36px] h-[36px];
-}
-
-.navbarText {
-	@apply text-[22px] font-semibold;
-}
-
-.navbarMain {
-	@apply flex flex-1 flex-col justify-between pt-[35px];
-}
-
-.navbarMainItems {
-	@apply flex flex-col gap-[14px];
-}
-
-.page {
-	@apply py-[40px] px-[30px] flex-1 relative overflow-auto scrollbar;
-}
-
-.pageHeader {
-	@apply flex justify-between items-center;
-}
-
-.pageHeaderTitle {
-	@apply text-[26px] font-medium;
-}
-
-.pageMainContentHeader {
-	@apply flex justify-between items-center;
-}
-
-.pageMainContentGrid {
-	@apply grid grid-cols-currency mb-[20px] mt-[35px] place-items-center p-[15px] border-b-[1px] bg-white z-10 border-gray-200 sticky top-[-40px];
-}
-
-.searchContainer {
-	@apply p-[2px] border-[1px] border-graySecondary rounded-xl flex items-center;
-}
-
-.searchInput {
-	@apply text-[14px] pl-[10px] border-none outline-none;
-}
-
-.searchIconContainer {
-	@apply bg-violetPrimary rounded-[10px] cursor-pointer;
-}
-
-.searchIcon {
-	@apply h-[30px] w-[30px] p-[8px] text-white;
-}
-
-.pageSignOutButton {
-	@apply flex hover:bg-gray-100 justify-between items-center p-[5px] bg-white rounded-xl gap-[14px];
-}
-
-.signOutContent {
-	@apply flex items-center gap-[14px] p-2;
-}
-
-.signOutIcon {
-	@apply rounded-xl w-[20px] h-[20px];
-}
-
-.pageContent {
-	@apply mt-[30px] p-[20px] flex-1 bg-white rounded-xl;
-}
-
-.currencyChartIcon {
-	@apply w-[34px] h-[34px] p-[10px] bg-violetPrimary text-white rounded-[15px] cursor-pointer;
-}
-
 .active {
 	@apply bg-violetPrimary rounded-2xl text-white pointer-events-none;
-}
-
-.currencyGrid {
-	@apply grid grid-cols-currency place-items-center p-[15px] border-b-[1px] border-grayPrimary drop-shadow-md;
-}
-
-.currencyText {
-	@apply text-[14px];
-}
-
-.currencyGrowth {
-	@apply flex text-[14px] items-center text-green-600;
-}
-
-.growthIcon {
-	@apply text-green-500 w-[22px] h-[22px];
-}
-
-.currencyFall {
-	@apply flex text-[14px] items-center text-red-600;
-}
-
-.fallIcon {
-	@apply text-red-500 w-[22px] h-[22px];
-}
-
-.pageLayout {
-	@apply h-screen w-screen bg-stone-50 flex border-2 border-grayPrimary;
-}
-
-.loadmoreButton {
-	@apply bg-violetPrimary text-white rounded-full animate-pulse py-2 px-10 flex items-center justify-center;
-}
-
-.loadmoreContainer {
-	@apply flex justify-center items-center p-5 mt-4;
 }
 
 .no-scrollbar {

@@ -1,11 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
-
-import { ReactComponent as SearchIcon } from '../assets/search.svg';
+import { useState } from 'react';
 
 import useDebounce from '../hooks/useDebounce';
 import Page from '../components/Page/Page';
 import Currency from '../components/Currency/Currency';
 import Loading from '../components/Loading/Loading';
+import useFetch from '../hooks/useFetch';
+import MainContentHeader from '../components/Page/MainContentHeader/MainContentHeader';
+import LoadMore from '../components/LoadMore/LoadMore';
+import DashboardHeader from '../components/DashboardHeader/DashboardHeader';
+import toast from 'react-hot-toast';
 
 type CurrencyType = {
 	id: string;
@@ -22,95 +25,44 @@ type CurrencyType = {
 	explorer: string;
 };
 
-const Dashboard: React.FC<{ user: boolean }> = (props) => {
-	const [currencies, setCurrencies] = useState<CurrencyType[]>([]);
-	const [offset, setOffset] = useState(currencies.length);
-	const [filterCurrencies, setFilterCurrencies] = useState('');
-	const [loading, setLoading] = useState(false);
+// const [currencies, setCurrencies] = useState<CurrencyType[]>([]);
+//const [offset, setOffset] = useState(currencies.length);
+// const currenciesHandler = (data: CurrencyType[]) => {
+// 	setCurrencies(data);
+// }
+//useEffect(() => {}, [filterCurrencies, offset]);
 
-	const debouncedSearch = useDebounce(filterCurrencies, 750);
+const Dashboard: React.FC = () => {
+	const [filterCurrencies, setFilterCurrencies] = useState<string>('');
 
-	const loadmoreHandler = () => {
-		setOffset((prevState) => prevState + 30);
-	};
+	const debouncedValue = useDebounce(filterCurrencies, 750);
+	const { loading, data, error, loadmoreHandler } = useFetch(filterCurrencies);
 
-	const fetchData = useCallback(() => {
-		setLoading(true);
-		setCurrencies([]);
-		setOffset(0);
-		fetch(`https://api.coincap.io/v2/assets?search=${debouncedSearch}`)
-			.then((res) => res.json())
-			.then((data) => {
-				setCurrencies(data.data);
-			})
-			.catch((err) => alert(err.message));
-		setLoading(false);
-	}, [debouncedSearch]);
+	console.log(data);
 
-	const fetchAllData = useCallback(() => {
-		setLoading(true);
-		fetch(`https://api.coincap.io/v2/assets?limit=30&offset=${offset}`)
-			.then((res) => res.json())
-			.then((data) =>
-				setCurrencies((prevState) => [...prevState, ...data.data]),
-			)
-			.catch((err) => alert(err.message));
-		setLoading(false);
-	}, [offset]);
-
-	useEffect(() => {
-		if (debouncedSearch) {
-			fetchData();
-		}
-		if (!filterCurrencies) {
-			fetchAllData();
-		}
-	}, [debouncedSearch, fetchData, filterCurrencies, fetchAllData]);
+	if (error) {
+		toast.error(error);
+	}
 
 	return (
 		<Page title="Dashboard">
-			<div className="pageMainContentHeader">
-				<h3>Dashboard</h3>
-				<div className="searchContainer">
-					<input
-						type="text"
-						placeholder="Search"
-						className="searchInput"
-						value={filterCurrencies}
-						onChange={(e) => setFilterCurrencies(e.target.value)}
-					/>
-					<div className="searchIconContainer">
-						<SearchIcon className="searchIcon" />
-					</div>
-				</div>
-			</div>
-
+			<DashboardHeader
+				changeHandler={(e) => setFilterCurrencies(e.target.value)}
+				filterCurrencies={filterCurrencies}
+			/>
 			<div>
-				<div className="pageMainContentGrid">
-					<p>Rank</p>
-					<p>Name</p>
-					<p>Symbol</p>
-					<p>Price</p>
-					<p>24h volume</p>
-					<p>Supply %</p>
-					<p>24h Change</p>
-					<p>Info</p>
-				</div>
+				<MainContentHeader />
 				{loading && <Loading />}
-				{!loading && currencies.length === 0 && <p>No data fetched.</p>}
+				{!loading && data.length === 0 && <p>No data fetched.</p>}
 				{!loading && (
 					<div>
-						{currencies.map((curr) => (
-							<Currency key={curr.id} curr={curr} />
+						{data.map((currency) => (
+							<Currency key={currency.id} currency={currency} />
 						))}
 					</div>
 				)}
-				{!loading && currencies.length > 0 && !(filterCurrencies.length > 0) && (
-					<div className="loadmoreContainer">
-						<button className="loadmoreButton" onClick={loadmoreHandler}>
-							Click to load more...
-						</button>
-					</div>
+				{!loading && data.length > 0 && filterCurrencies.length === 0 && (
+					<LoadMore onClick={loadmoreHandler} />
 				)}
 			</div>
 		</Page>
