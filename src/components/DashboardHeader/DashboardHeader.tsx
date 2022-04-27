@@ -2,8 +2,8 @@ import React from 'react';
 import { ReactComponent as SearchIcon } from '../../assets/search.svg';
 
 const DashboardHeader = (props: {
-	filterCurrencies: string | number | readonly string[] | undefined;
-	changeHandler: React.ChangeEventHandler<HTMLInputElement> | undefined;
+	filterCurrencies: string;
+	handleChange: (value: string) => void;
 }) => {
 	return (
 		<div className="flex justify-between items-center">
@@ -14,7 +14,7 @@ const DashboardHeader = (props: {
 					placeholder="Search"
 					className="text-[14px] pl-[10px] border-none outline-none"
 					value={props.filterCurrencies}
-					onChange={props.changeHandler}
+					onChange={(e) => props.handleChange(e.target.value)}
 				/>
 				<div className="bg-violetPrimary rounded-[10px] cursor-pointer">
 					<SearchIcon className="h-[30px] w-[30px] p-[8px] text-white" />

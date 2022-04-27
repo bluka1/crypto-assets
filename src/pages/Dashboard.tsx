@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import useDebounce from '../hooks/useDebounce';
 import Page from '../components/Page/Page';
@@ -24,21 +24,29 @@ type CurrencyType = {
 	vWap24Hr: number;
 	explorer: string;
 };
-
-// const [currencies, setCurrencies] = useState<CurrencyType[]>([]);
-//const [offset, setOffset] = useState(currencies.length);
-// const currenciesHandler = (data: CurrencyType[]) => {
-// 	setCurrencies(data);
+// useEffect(() => {
+// 	// if (!!debouncedValue) {
+// 	// 	setApiPath(`assets?search=${debouncedValue}`);
+// 	// }
+// 	// else {
+// 	// 	setApiPath(`assets?limit=30`);
+// 	// }
+// }, [debouncedValue]);
+// if (filterCurrencies.length > 0) {
+// 	setOffset(0);
+// 	url = `assets?search=${filterCurrencies}`;
+// } else {
+// 	url = `assets?limit=30&offset=${offset}`;
 // }
-//useEffect(() => {}, [filterCurrencies, offset]);
 
 const Dashboard: React.FC = () => {
-	const [filterCurrencies, setFilterCurrencies] = useState<string>('');
+	const [searchQuery, setSearchQuery] = useState<string>('');
+	const debouncedValue = useDebounce(searchQuery, 300);
 
-	const debouncedValue = useDebounce(filterCurrencies, 750);
-	const { loading, data, error, loadmoreHandler } = useFetch(filterCurrencies);
+	const [apiPath, setApiPath] = useState(`assets?limit=30`);
+	const { loading, data, error } = useFetch(apiPath);
 
-	console.log(data);
+	console.log('render');
 
 	if (error) {
 		toast.error(error);
@@ -47,8 +55,8 @@ const Dashboard: React.FC = () => {
 	return (
 		<Page title="Dashboard">
 			<DashboardHeader
-				changeHandler={(e) => setFilterCurrencies(e.target.value)}
-				filterCurrencies={filterCurrencies}
+				handleChange={setSearchQuery}
+				filterCurrencies={searchQuery}
 			/>
 			<div>
 				<MainContentHeader />
@@ -61,9 +69,9 @@ const Dashboard: React.FC = () => {
 						))}
 					</div>
 				)}
-				{!loading && data.length > 0 && filterCurrencies.length === 0 && (
+				{/* {!loading && data.length > 0 && searchQuery.length === 0 && (
 					<LoadMore onClick={loadmoreHandler} />
-				)}
+				)} */}
 			</div>
 		</Page>
 	);
