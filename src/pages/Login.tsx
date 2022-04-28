@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = (props: any) => {
 	const navigate = useNavigate();
-	const loginHandler = (props: any) => {
+	const loginHandler = () => {
 		props.login();
 		navigate('/');
 	};

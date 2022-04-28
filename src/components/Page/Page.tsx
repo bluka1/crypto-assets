@@ -9,11 +9,12 @@ import AuthContext from '../../context/auth-context';
 
 const Page: React.FC<{ title: string }> = (props) => {
 	const navigate = useNavigate();
+	const authCtx = useContext(AuthContext);
+
 	const logoutHandler = () => {
 		logOut();
 		navigate('/');
 	};
-	const authCtx = useContext(AuthContext);
 
 	return (
 		<div className="h-screen w-screen bg-stone-50 flex border-2 border-grayPrimary">

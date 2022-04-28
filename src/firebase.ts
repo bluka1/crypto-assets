@@ -64,7 +64,7 @@ const checkIfExists = (username: string, userId: string) => {
 };
 
 export const logIn = () => {
-	signInWithPopup(auth, provider)
+	return signInWithPopup(auth, provider)
 		.then((result) => {
 			const credential = GoogleAuthProvider.credentialFromResult(result);
 			const token = credential?.accessToken;
@@ -81,7 +81,7 @@ export const logIn = () => {
 };
 
 export const logOut = () => {
-	signOut(auth)
+	return signOut(auth)
 		.then(() => {
 			toast.success('Sorry to see you go... but you successfully signed out.', {
 				duration: 3000,
