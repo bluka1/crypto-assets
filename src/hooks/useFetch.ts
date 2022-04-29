@@ -17,20 +17,23 @@ type CurrencyType = {
 //offset: number | null,
 
 const useFetch = (url: string) => {
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState<CurrencyType[]>([]);
 	const [error, setError] = useState();
 
 	useEffect(() => {
 		const controller = new AbortController();
-		const fetchData = () => {
-			setLoading(true);
+		const fetchData = (url: string) => {
 			fetch(`https://api.coincap.io/v2/${url}`, {
 				signal: controller.signal,
 			})
 				.then((res) => res.json())
 				.then((data) => {
-					setData(data.data);
+					if (url.includes('offset')) {
+						setData((prevState) => [...prevState, ...data.data]);
+					} else {
+						setData(data.data);
+					}
 					setLoading(false);
 				})
 				.catch((err) => {
@@ -39,12 +42,12 @@ const useFetch = (url: string) => {
 				});
 		};
 
-		fetchData();
+		fetchData(url);
 
 		return () => {
 			controller.abort();
 		};
-	}, []);
+	}, [url]);
 
 	return {
 		loading,

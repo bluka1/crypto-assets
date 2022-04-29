@@ -24,33 +24,39 @@ type CurrencyType = {
 	vWap24Hr: number;
 	explorer: string;
 };
-// useEffect(() => {
-// 	// if (!!debouncedValue) {
-// 	// 	setApiPath(`assets?search=${debouncedValue}`);
-// 	// }
-// 	// else {
-// 	// 	setApiPath(`assets?limit=30`);
-// 	// }
-// }, [debouncedValue]);
-// if (filterCurrencies.length > 0) {
-// 	setOffset(0);
-// 	url = `assets?search=${filterCurrencies}`;
-// } else {
-// 	url = `assets?limit=30&offset=${offset}`;
-// }
 
 const Dashboard: React.FC = () => {
 	const [searchQuery, setSearchQuery] = useState<string>('');
+	const [offset, setOffset] = useState(0);
 	const debouncedValue = useDebounce(searchQuery, 300);
 
 	const [apiPath, setApiPath] = useState(`assets?limit=30`);
 	const { loading, data, error } = useFetch(apiPath);
 
-	console.log('render');
-
 	if (error) {
 		toast.error(error);
 	}
+
+	useEffect(() => {
+		if (searchQuery.length > 0) {
+			setOffset(0);
+			setApiPath(`assets?search=${debouncedValue}`);
+		} else {
+			if (apiPath !== `assets?limit=30`) {
+				setApiPath(`assets?limit=30`);
+			}
+		}
+	}, [searchQuery, debouncedValue]);
+
+	useEffect(() => {
+		if (offset > 0) {
+			setApiPath(`assets?limit=30&offset=${offset}`);
+		}
+	}, [offset]);
+
+	const loadmoreHandler = () => {
+		setOffset((prevState) => prevState + 30);
+	};
 
 	return (
 		<Page title="Dashboard">
@@ -69,9 +75,9 @@ const Dashboard: React.FC = () => {
 						))}
 					</div>
 				)}
-				{/* {!loading && data.length > 0 && searchQuery.length === 0 && (
+				{!loading && data.length > 0 && searchQuery.length === 0 && (
 					<LoadMore onClick={loadmoreHandler} />
-				)} */}
+				)}
 			</div>
 		</Page>
 	);
